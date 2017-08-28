@@ -41,7 +41,8 @@ class Renderizador implements GLSurfaceView.Renderer
     //Vai ser chamada quando a superficie mudar
     public void onSurfaceChanged(GL10 vrOpenGL, int largura, int altura) {
 
-        float[] vetCoordenadas= {0.0f, 0.0f, largura, 0.0f, largura/2, altura};
+        float[] vetCoordenadas= {0.0f,altura/4, largura, altura/4, largura/2, altura,
+                                0,altura-altura/4, largura,altura-altura/4,largura/2,0};
 
         //Configura a area de visualização utilizada na tela do aparelho
         vrOpenGL.glViewport(0,0,largura,altura);
@@ -64,8 +65,15 @@ class Renderizador implements GLSurfaceView.Renderer
         //configura a cor que sera utilizada para limpar o fundo da tela
         vrOpenGL.glClearColor(1.0f,0.0f,1.0f,1.0f);
 
+        //Gera Um VETOR DE VERTICES DO TIPO FLOATEBUFFER
         FloatBuffer buffer= CriaBuffer(vetCoordenadas);
 
+        //habilitar o open gl a veceber o array
+        //SOLICITAR QUE O OPENGL LIBERE O RCURSO DE ARRAY DE VERTICES
+        vrOpenGL.glEnableClientState(GL10.GL_VERTEX_ARRAY);
+
+        //REGISTRAR O VETOR DE VERTICES CRIADO (FLOATBUFFER) NA OPENGL
+        vrOpenGL.glVertexPointer(2,GL10.GL_FLOAT,0,buffer);
     }
 
     @Override
@@ -75,6 +83,10 @@ class Renderizador implements GLSurfaceView.Renderer
 
         vrOpengl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
+        //CONFIGURAR A COR ATUAL DO DESENHO
+        vrOpengl.glColor4f(1.0f,0.0f,0.0f,0.0f);
+        //Manda o OpenGL desenhar o vetor de vertices registrado.
+        vrOpengl.glDrawArrays(GL10.GL_TRIANGLES,0,6);
 
         /*
         //Calculo de FPS
