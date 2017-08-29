@@ -41,8 +41,10 @@ class Renderizador implements GLSurfaceView.Renderer
     //Vai ser chamada quando a superficie mudar
     public void onSurfaceChanged(GL10 vrOpenGL, int largura, int altura) {
 
-        float[] vetCoordenadas= {0.0f,altura/4, largura, altura/4, largura/2, altura,
-                                0,altura-altura/4, largura,altura-altura/4,largura/2,0};
+        float[] vetCoordenadas= {0,0,
+                                0,altura/2,
+                                largura/2,0,
+                                largura/2,altura/2};
 
         //Configura a area de visualização utilizada na tela do aparelho
         vrOpenGL.glViewport(0,0,largura,altura);
@@ -83,10 +85,11 @@ class Renderizador implements GLSurfaceView.Renderer
 
         vrOpengl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
+        //vrOpengl.glClearColor((float)Math.random(),(float)Math.random(),(float)Math.random(),1);
         //CONFIGURAR A COR ATUAL DO DESENHO
-        vrOpengl.glColor4f(1.0f,0.0f,0.0f,0.0f);
+        vrOpengl.glColor4f((float) Math.random(),(float) Math.random(),(float)Math.random(),1.0f);
         //Manda o OpenGL desenhar o vetor de vertices registrado.
-        vrOpengl.glDrawArrays(GL10.GL_TRIANGLES,0,6);
+        vrOpengl.glDrawArrays(GL10.GL_TRIANGLE_STRIP,0,4);
 
         /*
         //Calculo de FPS
