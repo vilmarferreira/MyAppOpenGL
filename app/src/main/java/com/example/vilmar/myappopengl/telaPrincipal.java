@@ -17,6 +17,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 class Renderizador implements GLSurfaceView.Renderer
 {
+
     int iFPS;
     long tempoInicial=0;
     long tempoAtual=0;
@@ -44,7 +45,9 @@ class Renderizador implements GLSurfaceView.Renderer
         float[] vetCoordenadas= {0,0,
                                 0,altura/2,
                                 largura/2,0,
-                                largura/2,altura/2};
+                                largura/2,altura/2,
+                                largura,0,
+                                largura,altura/2};
 
         //Configura a area de visualização utilizada na tela do aparelho
         vrOpenGL.glViewport(0,0,largura,altura);
@@ -89,7 +92,7 @@ class Renderizador implements GLSurfaceView.Renderer
         //CONFIGURAR A COR ATUAL DO DESENHO
         vrOpengl.glColor4f((float) Math.random(),(float) Math.random(),(float)Math.random(),1.0f);
         //Manda o OpenGL desenhar o vetor de vertices registrado.
-        vrOpengl.glDrawArrays(GL10.GL_TRIANGLE_STRIP,0,4);
+        vrOpengl.glDrawArrays(GL10.GL_TRIANGLE_STRIP,0,6);
 
         /*
         //Calculo de FPS
