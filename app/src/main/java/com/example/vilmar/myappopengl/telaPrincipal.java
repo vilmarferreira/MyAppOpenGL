@@ -21,6 +21,9 @@ class Renderizador implements GLSurfaceView.Renderer
     int iFPS;
     long tempoInicial=0;
     long tempoAtual=0;
+    float PosX=50,PosY=50;
+    float PosLargura,PosAltura;
+    int dir=1,dir2=1;
     @Override
     //será chamado quando o aplicativo for criado, 1 vez só
     public void onSurfaceCreated(GL10 vrOpengl, EGLConfig eglConfig) {
@@ -41,13 +44,12 @@ class Renderizador implements GLSurfaceView.Renderer
     @Override
     //Vai ser chamada quando a superficie mudar
     public void onSurfaceChanged(GL10 vrOpenGL, int largura, int altura) {
-
+        PosLargura=largura;
+        PosAltura=altura;
         float[] vetCoordenadas= {0,0,
                                 0,altura/2,
                                 largura/2,0,
-                                largura/2,altura/2,
-                                largura,0,
-                                largura,altura/2};
+                                largura/2,altura/2};
 
         //Configura a area de visualização utilizada na tela do aparelho
         vrOpenGL.glViewport(0,0,largura,altura);
@@ -68,7 +70,7 @@ class Renderizador implements GLSurfaceView.Renderer
         vrOpenGL.glMatrixMode(GL10.GL_MODELVIEW);
         vrOpenGL.glLoadIdentity();
         //configura a cor que sera utilizada para limpar o fundo da tela
-        vrOpenGL.glClearColor(1.0f,0.0f,1.0f,1.0f);
+        vrOpenGL.glClearColor(1.0f,1.0f,1.0f,1.0f);
 
         //Gera Um VETOR DE VERTICES DO TIPO FLOATEBUFFER
         FloatBuffer buffer= CriaBuffer(vetCoordenadas);
@@ -91,8 +93,22 @@ class Renderizador implements GLSurfaceView.Renderer
         //vrOpengl.glClearColor((float)Math.random(),(float)Math.random(),(float)Math.random(),1);
         //CONFIGURAR A COR ATUAL DO DESENHO
         vrOpengl.glColor4f((float) Math.random(),(float) Math.random(),(float)Math.random(),1.0f);
+
+        vrOpengl.glLoadIdentity();
+        //Faz a translação
+        vrOpengl.glTranslatef(PosX,PosY,0f);
         //Manda o OpenGL desenhar o vetor de vertices registrado.
-        vrOpengl.glDrawArrays(GL10.GL_TRIANGLE_STRIP,0,6);
+        vrOpengl.glDrawArrays(GL10.GL_TRIANGLE_STRIP,0,4);
+        PosX+=10*dir;
+        PosY+=10*dir2;
+        if(PosX<=0 || PosX>=PosLargura-PosLargura/2)
+        {
+            dir*=-1;
+        }
+        if(PosY<=0 || PosY>=PosAltura-PosAltura/2)
+        {
+            dir2*=-1;
+        }
 
         /*
         //Calculo de FPS
