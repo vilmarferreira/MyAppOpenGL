@@ -21,9 +21,11 @@ class Renderizador implements GLSurfaceView.Renderer
     int iFPS;
     long tempoInicial=0;
     long tempoAtual=0;
-    float PosX=50,PosY=50;
+    float PosX=0,PosY=0;
     float PosLargura,PosAltura;
     int dir=1,dir2=1;
+    int angulo=0;
+    int lado=200;
     @Override
     //será chamado quando o aplicativo for criado, 1 vez só
     public void onSurfaceCreated(GL10 vrOpengl, EGLConfig eglConfig) {
@@ -31,10 +33,10 @@ class Renderizador implements GLSurfaceView.Renderer
 
 
         //configura a cor que será usada para limpar a tela
-       // vrOpengl.glClearColor(1.0f,0.0f,0.0f,0.0f);
+        // vrOpengl.glClearColor(1.0f,0.0f,0.0f,0.0f);
         //metodo de limpar a tela
         //preenche todos os picels com a cor selecionada
-       // vrOpengl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+        // vrOpengl.glClear(GL10.GL_COLOR_BUFFER_BIT);
         //Chamado DUrante a criação do aplicativo 1 vez
         //Bom local para inicializar os recursos do programa
         //tempoInicial=System.currentTimeMillis();
@@ -46,10 +48,10 @@ class Renderizador implements GLSurfaceView.Renderer
     public void onSurfaceChanged(GL10 vrOpenGL, int largura, int altura) {
         PosLargura=largura;
         PosAltura=altura;
-        float[] vetCoordenadas= {0,0,
-                                0,altura/2,
-                                largura/2,0,
-                                largura/2,altura/2};
+        float[] vetCoordenadas= {-lado,-lado,
+                -lado,lado,
+                lado,-lado,
+                lado,lado};
 
         //Configura a area de visualização utilizada na tela do aparelho
         vrOpenGL.glViewport(0,0,largura,altura);
@@ -95,21 +97,29 @@ class Renderizador implements GLSurfaceView.Renderer
         vrOpengl.glColor4f((float) Math.random(),(float) Math.random(),(float)Math.random(),1.0f);
 
         vrOpengl.glLoadIdentity();
-        //Faz a translação
-        vrOpengl.glTranslatef(PosX,PosY,0f);
-        //Manda o OpenGL desenhar o vetor de vertices registrado.
-        vrOpengl.glDrawArrays(GL10.GL_TRIANGLE_STRIP,0,4);
-        PosX+=10*dir;
-        PosY+=10*dir2;
-        if(PosX<=0 || PosX>=PosLargura-PosLargura/2)
-        {
-            dir*=-1;
-        }
-        if(PosY<=0 || PosY>=PosAltura-PosAltura/2)
-        {
-            dir2*=-1;
-        }
 
+
+
+        vrOpengl.glRotatef(angulo,0,0,1);
+        //Faz a translação
+        vrOpengl.glTranslatef(PosX,PosY,0);
+        // Manda o OpenGL desenhar o vetor de vertices registrado.
+        vrOpengl.glDrawArrays(GL10.GL_TRIANGLE_STRIP,0,4);
+
+
+
+//        PosX+=10*dir;
+//        PosY+=10*dir2;
+//        if(PosX<=0 || PosX>=PosLargura-PosLargura/2)
+//        {
+//            dir*=-1;
+//        }
+//        if(PosY<=0 || PosY>=PosAltura-PosAltura/2)
+//        {
+//            dir2*=-1;
+//        }
+
+        angulo++;
         /*
         //Calculo de FPS
         tempoAtual= System.currentTimeMillis();
@@ -166,3 +176,4 @@ public class telaPrincipal extends AppCompatActivity {
 
     }
 }
+
