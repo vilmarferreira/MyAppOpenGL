@@ -24,8 +24,8 @@ class Renderizador implements GLSurfaceView.Renderer
     float PosX=000,PosY=000;
     float PosLargura,PosAltura;
     int dir=1,dir2=1;
-    int angulo=0;
-    int lado=500;
+    int angulo=20;
+    int lado=200;
     @Override
     //será chamado quando o aplicativo for criado, 1 vez só
     public void onSurfaceCreated(GL10 vrOpengl, EGLConfig eglConfig) {
@@ -48,16 +48,11 @@ class Renderizador implements GLSurfaceView.Renderer
     public void onSurfaceChanged(GL10 vrOpenGL, int largura, int altura) {
         PosLargura=largura;
         PosAltura=altura;
-                float[] vetCoordenadas= {0,0,
-                                        -largura/4,0,
-                                        -largura/6,-altura/8,
-                                        0,-altura/5,
-                                        largura/6, -altura/8,
-                                        largura/4,0,
-                                        largura/6, altura/8,
-                                        0, altura/5,
-                                        -largura/6, altura/8,
-                                        -largura/4,0
+                float[] vetCoordenadas= {-lado,-lado,
+                                        -lado,lado,
+                                        lado,-lado,
+                                        lado,lado
+
 
                                 };
                                 this.PosX=largura/2;
@@ -82,7 +77,7 @@ class Renderizador implements GLSurfaceView.Renderer
         vrOpenGL.glMatrixMode(GL10.GL_MODELVIEW);
         vrOpenGL.glLoadIdentity();
         //configura a cor que sera utilizada para limpar o fundo da tela
-        vrOpenGL.glClearColor(1.0f,0,1.0f,0);
+        vrOpenGL.glClearColor(0.0f,0.0f,0.0f,0.0f);
 
         //Gera Um VETOR DE VERTICES DO TIPO FLOATEBUFFER
         FloatBuffer buffer= CriaBuffer(vetCoordenadas);
@@ -110,14 +105,39 @@ class Renderizador implements GLSurfaceView.Renderer
 
 
 
-        vrOpengl.glClearColor(0.0f,0.0f,0.0f,0.0f);
+        vrOpengl.glColor4f(1.0f,1.0f,0.0f,1.0f);
         //Faz a translação
         vrOpengl.glTranslatef(PosX,PosY,1);
          //  vrOpengl.glRotatef(angulo,0,0,1);
         // Manda o OpenGL desenhar o vetor de vertices registrado.
 
-        vrOpengl.glDrawArrays(GL10.GL_TRIANGLE_FAN,0,11);
+        vrOpengl.glDrawArrays(GL10.GL_TRIANGLE_STRIP,0,5);
 
+        //
+
+        vrOpengl.glPushMatrix();
+        vrOpengl.glRotatef(angulo,0,0,1);
+        vrOpengl.glTranslatef(0,lado*3,0);
+        vrOpengl.glRotatef(angulo,0,0,1);
+        vrOpengl.glColor4f(0.0f,0.0f,1.0f,1.0f);
+        vrOpengl.glScalef(0.7f,0.7f,0.7f);
+        vrOpengl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0,5);
+
+        vrOpengl.glPushMatrix();
+        vrOpengl.glRotatef(angulo,0,0,1);
+        vrOpengl.glTranslatef(0,lado*2,0);
+        vrOpengl.glRotatef(angulo,0,0,1);
+        vrOpengl.glColor4f(1.0f,1.0f,1.0f,1.0f);
+        vrOpengl.glScalef(0.5f,0.5f,0.5f);
+        vrOpengl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0,5);
+        vrOpengl.glPopMatrix();
+
+        vrOpengl.glPopMatrix();
+
+
+
+
+        angulo++;
 
 
 //        PosX+=10*dir;
@@ -131,7 +151,7 @@ class Renderizador implements GLSurfaceView.Renderer
 //            dir2*=-1;
 //        }
 
-        angulo+=10;
+
         /*
         //Calculo de FPS
         tempoAtual= System.currentTimeMillis();
